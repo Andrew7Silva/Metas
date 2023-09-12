@@ -1,22 +1,13 @@
 import { useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
+
+import MetaItem from "./components/MetaItem";
+import MetaEntrada from "./components/MetaEntrada";
 
 export default function App() {
-  const [enteredTextMeta, setEnteredTextMeta] = useState("");
   const [metasList, setMetasList] = useState([]);
-  function metaEntradaHandler(enteredText) {
-    setEnteredTextMeta(enteredText);
-  }
 
-  function metaAddHandler() {
+  function metaAddHandler(enteredTextMeta) {
     setMetasList((atualMetasList) => [
       ...atualMetasList,
       { text: enteredTextMeta, key: Math.random().toString() },
@@ -25,23 +16,12 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Metas do seu curso!"
-          onChangeText={metaEntradaHandler}
-        />
-        <Button title="Add Meta" onPress={metaAddHandler} />
-      </View>
+      <MetaEntrada onMetaAdd={metaAddHandler} />
       <View style={styles.metasContainer}>
         <FlatList
           data={metasList}
           renderItem={(itemData) => {
-            return (
-              <View style={styles.metaItem}>
-                <Text style={styles.metaText}>{itemData.item.text}</Text>
-              </View>
-            );
+            return <MetaItem text={itemData.item.text} />;
           }}
           keyExtractor={(item, index) => {
             return item.id;
@@ -59,32 +39,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
   },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "70%",
-    marginRight: 8,
-    padding: 8,
-  },
   metasContainer: {
     flex: 5,
-  },
-  metaItem: {
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: "#5e0acc",
-  },
-  metaText: {
-    color: "white",
   },
 });
