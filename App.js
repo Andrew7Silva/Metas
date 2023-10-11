@@ -10,8 +10,14 @@ export default function App() {
   function metaAddHandler(enteredTextMeta) {
     setMetasList((atualMetasList) => [
       ...atualMetasList,
-      { text: enteredTextMeta, key: Math.random().toString() },
+      { text: enteredTextMeta, id: Math.random().toString() },
     ]);
+  }
+
+  function metaDeleteHandler(id) {
+    setMetasList((atualMetasList) => {
+      return atualMetasList.filter((meta) => meta.id !== id);
+    });
   }
 
   return (
@@ -21,12 +27,18 @@ export default function App() {
         <FlatList
           data={metasList}
           renderItem={(itemData) => {
-            return <MetaItem text={itemData.item.text} />;
-          }}
+            return (
+              <MetaItem
+                text={itemData.item.text}
+                id={itemData.item.id}
+                onDeleteItem={metaDeleteHandler}
+              />
+            );
+          }}  
           keyExtractor={(item, index) => {
             return item.id;
           }}
-          alwaysBounceHorizontal={false}
+          alwaysBounceVertical={false}
         />
       </View>
     </View>
