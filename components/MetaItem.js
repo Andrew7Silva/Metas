@@ -6,6 +6,7 @@ function MetaItem(props) {
       <Pressable
         android_ripple={{ color: "#210644" }}
         onPress={props.onDeleteItem.bind(this, props.id)}
+        style={({pressed}) => pressed && styles.pressItem}
       >
         <Text style={styles.metaText}>{props.text}</Text>
       </Pressable>
@@ -20,6 +21,9 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 6,
     backgroundColor: "#5e0acc",
+  },
+  pressItem: {
+    opacity: 0.5,
   },
   metaText: {
     color: "white",
